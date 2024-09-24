@@ -4,23 +4,105 @@
 
 using namespace std;
 
-class pipe {
-    int kilometr;
+struct pipe {
+    string kilometr;
     int length;
     int diametr;
     bool repair;
 };
 
-class ks {
+struct ks {
     string name;
     int workshops;
-
-
+    int workshops_in_work;
+    double eff;
 };
+
+void check_command(int& x) {
+    cin >> x;
+    while ((x> 7) || (x < 0) || !(x)) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');// отчистила ввод
+        cout << "Введите число от 0 до 7!" << endl;
+        cin >> x;
+    }
+}
+
+void check_int(int& x) {
+    cin >> x;
+    while (!x || x < 0 || cin.peek() != '\n' || cin.peek() == ' ') {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');// отчистила ввод
+        cout << "Введите число!" << endl;
+        cin >> x;
+    }
+}
+
+void check_bool(bool& x) {
+    cin >> x;
+    while (!(x) || (x < 0) || (x > 1)) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Труба в ремонте? (1 - да, 0 - нет)"<<endl;
+        cin >> x;
+
+    }
+}
+
+void check_double(double& x) {
+    cin >> x;
+    while (!x || (x < 0)) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Введите эффективность!" << endl;
+        cin >> x;
+    }
+}
+
+pipe pipe_input() {
+    pipe newpipe;
+
+    cout << "Введите название трубы"<<endl;
+    cin.ignore();
+    getline(cin, newpipe.kilometr);
+
+    cout << "Введите длинну" << endl;
+    check_int(newpipe.length);
+
+    cout << "Введите диаметр" << endl;
+    check_int(newpipe.diametr);
+
+    cout << "Труба в ремонте? (1 - да, 0 - нет):" << endl;
+    check_bool(newpipe.repair);
+
+    return newpipe;
+}
+
+ks ks_input() {
+    ks newks;
+
+    cout << "Введите название КС" << endl;
+    cin.ignore();
+    getline(cin, newks.name);
+
+    cout << "Введите количество цехов" << endl;
+    check_int(newks.workshops);
+
+    cout << "Введите количество цехов в работе" << endl;
+    check_int(newks.workshops_in_work);
+
+    cout << "эффективность" << endl;
+    check_double(newks.eff);
+
+    return newks;
+}
 
 int main()
 {
     int f;
+    pipe newpipe;
+    ks newks;
+
     setlocale(LC_ALL, ""); //для отображение русского языка
     cout << "Введите: "<<endl;
     cout << "Добавить трубу - 1"<<endl;
@@ -31,12 +113,41 @@ int main()
     cout << "Сохранить - 6" << endl;
     cout << "Загрузить - 7" << endl;
     cout << "Выход - 0" << endl;
-    cin >> f;
-    while (!(cin >> f)) {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');// отчистила ввод
-        cout << "Введите число!" << endl;
-        cin >> f;
+
+    check_command(f);
+
+    switch (f) {
+    case 1: {
+        newpipe = pipe_input();
+        break;
+    }
+    case 2: {
+        newks = ks_input();
+        break;
+    }
+    case 3: {
+
+        break;
+    }
+    case 4: {
+
+        break;
+    }
+    case 5: {
+
+        break;
+    }
+    case 6: {
+
+        break;
+    }
+    case 7: {
+
+        break;
+    }
+    case 0: {
+        return 0;
+    }
     }
 
 }
