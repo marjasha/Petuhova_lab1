@@ -105,7 +105,12 @@ void pipe_out(const pipe& newpipe) {  // const не позволяет изме�
         cout << "Имя " << newpipe.kilometr <<endl;
         cout << "Длинна " << newpipe.length <<endl;
         cout << "Диаметр " << newpipe.diametr<<endl;
-        cout << "В ремонте " << newpipe.repair <<endl;
+        if (newpipe.repair == 0) {
+            cout << "В ремонте нет" <<endl;
+        }
+        else {
+            cout << "В ремонте да" <<endl;
+        }
     }
 }
 
@@ -119,6 +124,26 @@ void ks_out(const ks& newks) {  // const не позволяет изменят�
         cout << "Количество цехов в работе " << newks.workshops_in_work << endl;
         cout << "Эффективность " << newks.eff << endl;
     }
+}
+
+pipe pipe_change(pipe& newpipe) {
+    newpipe.repair = !newpipe.repair;
+    cout << "Статус изменен на "<<newpipe.repair << endl;
+    return newpipe;
+}
+
+ks ks_change(ks& newks) {
+    cout << "Количество цехов в работе " << endl;
+    check_int(newks.workshops_in_work);
+
+    while (newks.workshops < newks.workshops_in_work) {
+        cout<<"Колличество работающих станций должно быть меньше количества станций" << endl;
+        check_int(newks.workshops_in_work);
+    }
+    cout << "эффективность" << endl;
+    check_double(newks.eff);
+    
+    return newks;
 }
 
 int main()
@@ -159,11 +184,22 @@ int main()
         break;
     }
     case 4: {
-
+        if (newpipe.kilometr.empty()) {
+            cout << "Нет трубы" << endl;
+        }
+        else {
+            pipe_change(newpipe);
+        }
         break;
     }
     case 5: {
-
+        if (newks.name.empty()) {
+            cout << "Нет КС" << endl;
+        }
+        else {
+            ks_change(newks);
+        }
+        break;
         break;
     }
     case 6: {
