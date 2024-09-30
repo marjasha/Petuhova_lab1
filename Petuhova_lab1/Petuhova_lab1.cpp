@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <string>
 #include <typeinfo>
+#include <fstream>
 
 using namespace std;
 
@@ -146,6 +147,39 @@ ks ks_change(ks& newks) {
     return newks;
 }
 
+void write_pipe_ks(pipe newpipe, ks newks) {
+    ofstream file("output.txt");
+    if (file.is_open()) {
+        if (newpipe.kilometr.empty()) {
+            file << "Нет данных о трубе" << endl;
+        }
+        else {
+            file << "Труба" << endl;
+            file << "Имя " << newpipe.kilometr << endl;
+            file << "Длинна " << newpipe.length << endl;
+            file << "Диаметр " << newpipe.diametr << endl;
+            if (newpipe.repair == 0) {
+                file << "В ремонте нет" << endl;
+            }
+            else {
+                file << "В ремонте да" << endl;
+            }
+        }
+        if (newks.name.empty()) {
+            file << "Нет данных о КС" << endl;
+        }
+        else {
+            file << "Имя " << newks.name << endl;
+            file << "Количество цехов " << newks.workshops << endl;
+            file << "Количество цехов в работе " << newks.workshops_in_work << endl;
+            file << "Эффективность " << newks.eff << endl;
+        }
+    }
+    else {
+        cout << "Не получается открыть файл" << endl;
+    }
+}
+
 int main()
 {
     int f;
@@ -203,7 +237,7 @@ int main()
         break;
     }
     case 6: {
-
+        write_pipe_ks(newpipe, newks);
         break;
     }
     case 7: {
