@@ -2,6 +2,7 @@
 #include <string>
 #include <typeinfo>
 #include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -92,6 +93,11 @@ ks ks_input() {
     cout << "Введите количество цехов в работе" << endl;
     check_int(newks.workshops_in_work);
 
+    while (newks.workshops < newks.workshops_in_work) {
+        cout << "Колличество работающих станций должно быть меньше количества станций" << endl;
+        check_int(newks.workshops_in_work);
+    }
+
     cout << "эффективность" << endl;
     check_double(newks.eff);
 
@@ -169,6 +175,7 @@ void write_pipe_ks(pipe newpipe, ks newks) {
             file << "Нет данных о КС" << endl;
         }
         else {
+            file << "КС" << endl;
             file << "Имя " << newks.name << endl;
             file << "Количество цехов " << newks.workshops << endl;
             file << "Количество цехов в работе " << newks.workshops_in_work << endl;
@@ -178,6 +185,57 @@ void write_pipe_ks(pipe newpipe, ks newks) {
     else {
         cout << "Не получается открыть файл" << endl;
     }
+}
+
+void read_pipe_ks(pipe& newpipe, ks& newks) {
+    string line;
+    ifstream file("output.txt");
+    if (file.is_open()) {
+        if (file.eof()) {
+            cout << "Файл пустой" << endl;
+        }
+        else {
+            getline(file, line);
+            if (line == "Нет данных о трубе") {
+                cout << "Нет данных о трубе" << endl;
+            }
+            else {
+                getline(file, line);
+                newpipe.kilometr = line.substr(4);
+                getline(file, line);
+                istringstream(line.substr(7)) >> newpipe.length;
+                getline(file, line);
+                istringstream(line.substr(9)) >> newpipe.diametr;
+                getline(file, line);
+                if (line.substr(10) == "да") {
+                    newpipe.repair = 1;
+                }
+                else {
+                    newpipe.repair = 0;
+                }
+            }
+            getline(file, line);
+            if (line == "Нет данных о КС") {
+                cout << "Нет данных о КС" << endl;
+            }
+            else {
+                getline(file, line);
+                newks.name = line.substr(4);
+                getline(file, line);
+                istringstream(line.substr(17)) >> newks.workshops;
+                getline(file, line);
+                istringstream(line.substr(26)) >> newks.workshops_in_work;
+                getline(file, line);
+                istringstream(line.substr(12)) >> newks.eff;
+            }
+
+        }
+        file.close();
+    }
+    else {
+        cout << "Не получается открыть файл" << endl;
+    }
+
 }
 
 int main()
@@ -241,7 +299,7 @@ int main()
         break;
     }
     case 7: {
-
+        read_pipe_ks(newpipe, newks);
         break;
     }
     case 0: {
